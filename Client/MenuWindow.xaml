@@ -1,0 +1,15 @@
+﻿<Window x:Class="Client.MenuWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client"
+        mc:Ignorable="d"
+        Title="Window1" Height="450" Width="800">
+    <Grid>
+        <Button x:Name="LogOutButton" Content="Log Out" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="707,10,0,0" Click="LogOutButton_Click"/>
+        <Button x:Name="ShowAllServicesButton" Content="Show All Services" HorizontalAlignment="Left" Height="39" Margin="116,61,0,0" VerticalAlignment="Top" Width="319" Click="ShowAllServicesButton_Click"/>
+        <Button x:Name="SearchAServiceButton" Content="Search A Service" HorizontalAlignment="Left" Height="39" Margin="116,122,0,0" VerticalAlignment="Top" Width="319" Click="SearchAServiceButton_Click"/>
+
+    </Grid>
+</Window>
