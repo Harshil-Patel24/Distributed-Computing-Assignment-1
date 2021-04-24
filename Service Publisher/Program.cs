@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Service_Publisher
 {
@@ -68,6 +69,10 @@ namespace Service_Publisher
                             break;
                         case 2:
                             Login();
+                            break;
+                        case 0:
+                            //exit();
+                            Environment.Exit(0);
                             break;
                         default:
                             Console.WriteLine("Please enter a valid number selection {0-2}");
@@ -165,27 +170,32 @@ namespace Service_Publisher
             bool exit = false;
             while (!exit)
             {
-                Console.WriteLine("Select an option:\n1) Publish a service\n2) Publish all valid services\n3) Unpublish a service\n0) Exit");
+                Console.WriteLine("Select an option:\n1) Publish a service\n2) Publish all valid services\n3) Unpublish a service\n0) Log out");
                 string selection = Console.ReadLine();
-                int sel;
+                int sel = -1;
                 bool isNum = int.TryParse(selection, out sel);
-                switch(sel)
+
+                if(isNum)
                 {
-                    case 1:
-                        Publish();
+                    switch(sel)
+                    {
+                        case 1:
+                            Publish();
+                            break;
+                        case 2:
+                            PublishAllDefault();
+                            break;
+                        case 3:
+                            Unpublish();
+                            break;
+                        case 0:
+                            exit = true;
+                            DataSingleton.Instance.token = 0;
                         break;
-                    case 2:
-                        PublishAllDefault();
-                        break;
-                    case 3:
-                        Unpublish();
-                        break;
-                    case 0:
-                        exit = true;
-                    break;
-                    default:
-                        Console.WriteLine("Please enter a valid number selection {0-3}");
-                        break;
+                        default:
+                            Console.WriteLine("Please enter a valid number selection {0-3}");
+                            break;
+                    }
                 }
             }
         }
@@ -198,58 +208,158 @@ namespace Service_Publisher
             publisher.PublishAllDefault();
         }
 
+        //public static void Publish()
+        //{
+        //    Console.WriteLine("Please enter the name of the service (this must be an exact match to a valid service):");
+        //    string name = Console.ReadLine();
+        //    Console.WriteLine("Please enter a description of the service");
+        //    string desc = Console.ReadLine();
+        //    bool cont = true;
+        //    string endpoint;
+        //    int numop;
+
+        //    do
+        //    {
+        //        Console.WriteLine("Please enter the api endpoint (this must be the exact endpoint eg. https://localhost:0000/api/serviceendpoint/)");
+        //        endpoint = Console.ReadLine();
+        //        if (ValidEndpointFormat(endpoint))
+        //        {
+        //            cont = false;
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("Invalid endpoint format!");
+        //        }
+        //    }
+        //    while (cont);
+
+        //    do
+        //    {
+        //        cont = true;
+        //        Console.WriteLine("Please enter the number of operands");
+        //        string num = Console.ReadLine();
+        //        cont = !(int.TryParse(num, out numop));
+        //    }
+        //    while (cont);
+
+        //    Console.WriteLine("Please enter the operand type");
+        //    string type = Console.ReadLine();
+
+        //    ServicePublisher publisher = new ServicePublisher();
+        //    publisher.Publish(name, desc, endpoint, numop, type);
+        //}
+
         public static void Publish()
         {
-            Console.WriteLine("Please enter the name of the service (this must be an exact match to a valid service):");
-            string name = Console.ReadLine();
-            Console.WriteLine("Please enter a description of the service");
-            string desc = Console.ReadLine();
-            bool cont = true;
-            string endpoint;
-            int numop;
+            //string URL = "https://localhost:44358/";
+            //RestClient client = new RestClient(URL);
 
+            //RestRequest asrequest = new RestRequest("api/allservices/");
+            //PassObject<string> pass = new PassObject<string>();
+            //pass.Token = DataSingleton.Instance.token;
+            //asrequest.AddJsonBody(pass);
+            //IRestResponse serviceret = client.Post(asrequest);
+            //ReturnObject<List<ServiceModel>> services = JsonConvert.DeserializeObject<ReturnObject<List<ServiceModel>>>(serviceret.Content);
+            
+
+            ServiceModel[] services = new ServicePublisher().valid_services;
+            bool cont = true;
             do
             {
-                Console.WriteLine("Please enter the api endpoint (this must be the exact endpoint eg. https://localhost:0000/api/serviceendpoint/)");
-                endpoint = Console.ReadLine();
-                if (ValidEndpointFormat(endpoint))
+                int count = 0;
+                Console.WriteLine("Please select which of the following services you would like to publish (or enter 0 to return to the menu): ");
+                foreach(ServiceModel service in services)
                 {
-                    cont = false;
+                    Console.WriteLine((count + 1).ToString() + ") " + service.Name);
+                    count++;
+                }
+                Console.WriteLine("0) Return to menu");
+
+                string entry = Console.ReadLine();
+
+                bool isNum = int.TryParse(entry, out int selection);
+
+                if (!isNum || selection < 0 || selection > count - 1)
+                {
+                    Console.WriteLine("Please enter a valid input");
                 }
                 else
                 {
-                    Console.WriteLine("Invalid endpoint format!");
+                    if (selection == 0)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        cont = false;
+
+                        //string endpoint = endpoints[selection - 1];
+                        ServiceModel ser = services[selection - 1];
+                        ServicePublisher servicePublisher = new ServicePublisher();
+                        servicePublisher.Publish(ser);
+                        Console.WriteLine(ser.Name + " has been published");
+                    }
                 }
             }
             while (cont);
-
-            do
-            {
-                cont = true;
-                Console.WriteLine("Please enter the number of operands");
-                string num = Console.ReadLine();
-                cont = !(int.TryParse(num, out numop));
-            }
-            while (cont);
-
-            Console.WriteLine("Please enter the operand type");
-            string type = Console.ReadLine();
-
-            ServicePublisher publisher = new ServicePublisher();
-            publisher.Publish(name, desc, endpoint, numop, type);
         }
-    
+
         public static void Unpublish()
         {
-            Console.WriteLine("Please enter the api endpoint of the service you would like to unpublish (this must be the exact endpoint eg. https://localhost:0000/api/serviceendpoint/)");
-            string endpoint = Console.ReadLine();
-
-            string URL = "https://localhost:44351/";
+            string URL = "https://localhost:44358/";
             RestClient client = new RestClient(URL);
-            RestRequest request = new RestRequest("api/unpublish/");
-            request.AddJsonBody(endpoint);
 
-            client.Execute(request);
+            RestRequest asrequest = new RestRequest("api/allservices/");
+            PassObject<string> pass = new PassObject<string>();
+            pass.Token = DataSingleton.Instance.token;
+            asrequest.AddJsonBody(pass);
+            IRestResponse serviceret = client.Post(asrequest);
+
+
+            ReturnObject<List<ServiceModel>> services = JsonConvert.DeserializeObject<ReturnObject<List<ServiceModel>>>(serviceret.Content);
+            string[] endpoints = new string[services.Returned.Count];
+            bool cont = true;
+            do
+            {
+                int count = 0;
+
+                Console.WriteLine("Please select which of the following services you would like to remove (or enter 0 to return to the menu): ");
+                foreach (ServiceModel service in services.Returned)
+                {
+                    endpoints[count] = service.API_Endpoint;
+                    Console.WriteLine((count + 1).ToString() + ") " + service.Name);
+                    count++;
+                }
+                Console.WriteLine("0) Return to menu");
+
+                string entry = Console.ReadLine();
+
+                bool isNum = int.TryParse(entry, out int selection);
+
+                if (!isNum || selection < 0 || selection > count - 1)
+                {
+                    Console.WriteLine("Please enter a valid input");
+                }
+                else
+                {
+                    if(selection == 0)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        cont = false;
+
+                        string endpoint = endpoints[selection - 1];
+
+                        ServicePublisher servicePublisher = new ServicePublisher();
+                        servicePublisher.Unpublish(endpoint);
+                        Console.WriteLine("Service unpublished");
+                    }
+                }
+            }
+            while(cont);
+
         }
 
         //Ensure an endpoint is in a valid format

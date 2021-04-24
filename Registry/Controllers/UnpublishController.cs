@@ -45,7 +45,7 @@ namespace Registry.Controllers
                     JsonSerializer serializer = new JsonSerializer();
                     services = (List<ServiceModel>)serializer.Deserialize(sr, typeof(List<ServiceModel>));
                     
-                    foreach(ServiceModel service in services)
+                    foreach(ServiceModel service in services.ToList())
                     {
                         //If api endpoints match, then remove the service
                         if(service.API_Endpoint.Equals(value))

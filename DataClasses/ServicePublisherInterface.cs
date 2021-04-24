@@ -17,7 +17,7 @@ namespace DataClasses
         int Login(string name, string password);
 
         [OperationContract]
-        void Publish(string name, string description, string api_endpoint, int no_operands, string operand_types);
+        void Publish(ServiceModel sm);
 
         [OperationContract]
         void Unpublish(string api_endpoint);

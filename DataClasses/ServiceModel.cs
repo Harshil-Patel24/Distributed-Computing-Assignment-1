@@ -1,17 +1,25 @@
 ﻿using System;
+using System.ServiceModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Runtime.Serialization;
 
 namespace DataClasses
 {
     //Contains the entire description of a service
+    [DataContract]
     public class ServiceModel
     {
+        [DataMember]
         public string Name;
+        [DataMember]
         public string Description;
+        [DataMember]
         public string API_Endpoint;
+        [DataMember]
         public int Number_Of_Operands;
+        [DataMember]
         public string Operand_Type;
 
         public ServiceModel(string name, string desc, string api, int noop, string optype)

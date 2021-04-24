@@ -13,7 +13,7 @@ namespace Service_Publisher
     class ServicePublisher : ServicePublisherInterface
     {
         //Valid services
-        private ServiceModel[] valid_services = { new ServiceModel("AddTwoNumbers", "Adds two numbers", "https://localhost:44303/api/addtwonumbers/", 2, "integer"), new ServiceModel("AddThreeNumbers", "Adds three numbers", "https://localhost:44303/api/addthreenumbers/", 3, "integer"), new ServiceModel("MulTwoNumbers", "Multiplys two numbers", "https://localhost:44303/api/multwonumbers/", 2, "integer"), new ServiceModel("MulThreeNumbers", "Multiplys three numbers", "https://localhost:44303/api/multhreenumbers/", 3, "integer"), new ServiceModel("GenPrimeNumbersInRange", "Generates all prime numbers in a given range", "https://localhost:44303/api/genprimenumbersinrange/", 2, "integer"), new ServiceModel("GenPrimeNumbersToValue", "Generates all primes numbers from 1 to a given number", "https://localhost:44303/api/genprimenumberstovalue/", 1, "integer"), new ServiceModel("IsPrimeNumber", "Checks if input number is a prime", "https://localhost:44303/api/isprimenumber/", 1, "integer") };
+        public ServiceModel[] valid_services = { new ServiceModel("AddTwoNumbers", "Adds two numbers", "https://localhost:44303/api/addtwonumbers/", 2, "integer"), new ServiceModel("AddThreeNumbers", "Adds three numbers", "https://localhost:44303/api/addthreenumbers/", 3, "integer"), new ServiceModel("MulTwoNumbers", "Multiplys two numbers", "https://localhost:44303/api/multwonumbers/", 2, "integer"), new ServiceModel("MulThreeNumbers", "Multiplys three numbers", "https://localhost:44303/api/multhreenumbers/", 3, "integer"), new ServiceModel("GenPrimeNumbersInRange", "Generates all prime numbers in a given range", "https://localhost:44303/api/genprimenumbersinrange/", 2, "integer"), new ServiceModel("GenPrimeNumbersToValue", "Generates all primes numbers from 1 to a given number", "https://localhost:44303/api/genprimenumberstovalue/", 1, "integer"), new ServiceModel("IsPrimeNumber", "Checks if input number is a prime", "https://localhost:44303/api/isprimenumber/", 1, "integer") };
 
         public int Login(string name, string password)
         {
@@ -43,9 +43,23 @@ namespace Service_Publisher
             return status;
         }
 
-        public void Publish(string name, string description, string api_endpoint, int no_operands, string operand_types)
+        //public void Publish(string name, string description, string api_endpoint, int no_operands, string operand_types)
+        //{
+        //    ServiceModel sm = new ServiceModel(name, description, api_endpoint, no_operands, operand_types);
+        //    PassObject<ServiceModel> pass = new PassObject<ServiceModel>();
+        //    pass.Pass = sm;
+        //    pass.Token = DataSingleton.Instance.token;
+        //    string URL = "https://localhost:44358/";
+        //    RestClient client = new RestClient(URL);
+        //    RestRequest request = new RestRequest("api/publish/");
+
+        //    request.AddJsonBody(pass);
+
+        //    client.Post(request);
+        //}
+
+        public void Publish(ServiceModel sm)
         {
-            ServiceModel sm = new ServiceModel(name, description, api_endpoint, no_operands, operand_types);
             PassObject<ServiceModel> pass = new PassObject<ServiceModel>();
             pass.Pass = sm;
             pass.Token = DataSingleton.Instance.token;
@@ -62,7 +76,7 @@ namespace Service_Publisher
         {
             foreach (ServiceModel sm in valid_services)
             {
-                Publish(sm.Name, sm.Description, sm.API_Endpoint, sm.Number_Of_Operands, sm.Operand_Type);
+                Publish(sm);
             }
         }
 
