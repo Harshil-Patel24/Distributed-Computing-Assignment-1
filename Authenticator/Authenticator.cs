@@ -9,62 +9,69 @@ using DataClasses;
 
 namespace Authenticator
 {
+    //The authenticator is used to register and log in to this program
     class Authenticator : AuthenticatorInterface
     {
+        //These are the locations of the stored accounts and tokens
+        //If running this program on a different computer, please change these to 
         public const string REGISTERED_ACCOUNTS_PATH = @"D:\Harshil\Uni\Units\DC\Assignment\Registered_Accounts.txt";
         public const string ACCOUNT_TOKENS_PATH = @"D:\Harshil\Uni\Units\DC\Assignment\Account_Tokens.txt";
-        //private IDictionary<int, string> tokens = new Dictionary<int, string>();
-        private HashSet<int> tokens = new HashSet<int>();
 
-        //These methods are stubs
+        //Registers a new user
         public string Register(string name, string password)
         {
+            //String defaults to fail until succeeded
             string ret = "unable to register";
 
+            //Ensure that neither name or password are empty
             if(name.Equals("") || password.Equals(""))
             {
                 return "Please fill out both username and password";
             }
 
+            //Proceed if the account doesn't exist
             if(!AccountExists(name))
             {
+                //Open the registered accounts file and write the name and password as comma separated values
                 using (StreamWriter sw = File.AppendText(REGISTERED_ACCOUNTS_PATH))
                 {
                     sw.WriteLine(name + "," + password);
+                    //Change the return value to be a success
                     ret = "successfully registered";
                     sw.Close();
                 }
             }
+            //If the account exists return a string that informs user that it already exists
             else
             {
                 ret = "account already exists";
             }
-
             return ret;
         }
 
-        //Change this so it only adds a token if it doesnt exist already, otherwise use the preexisting one in the file
+        //Logs the user in
         public string Login(string name, string password)
         {
+            //Random used to make tokens
             Random rand = new Random();
+            //Retval will return token if succeeded or error messages if not
             string retval = "";
             int tok = 0;
             bool accexists = false;
+
             using (StreamReader sr = File.OpenText(REGISTERED_ACCOUNTS_PATH))
             {
                 string[] lines = File.ReadAllLines(REGISTERED_ACCOUNTS_PATH);
 
+                //Checks if there are any registered accounts
                 if(new FileInfo(REGISTERED_ACCOUNTS_PATH).Length == 0)
                 {
                     return "There are no acounts registered yet! Please register first!";
-                    //throw new FaultException<FileFormatInvalidFault>(new FileFormatInvalidFault() { Issue = "File is empty" });
                 }
 
-                //Console.WriteLine(lines[0]);
                 foreach (string line in lines)
                 {
-                    //Console.WriteLine(line + ": " + line.Length.ToString());
-
+                    //The file must be comma separated with username and password
                     if (line.Split(',').Length != 2)
                     {
                         return "The file: " + REGISTERED_ACCOUNTS_PATH + " was not formatted correctly";
@@ -75,33 +82,29 @@ namespace Authenticator
 
                     if(namecheck.Equals(name))
                     {
+                        //This boolean is used to give meaningful error messages
                         accexists = true;
                         if(passcheck.Equals(password))
                         {
+                            //User log in will be successful
+                            //Not to check if the account already has a token, or if we need to generate one
                             bool found = false;
                             using(StreamReader srtok = File.OpenText(ACCOUNT_TOKENS_PATH))
                             {
                                 string[] toklines = File.ReadAllLines(ACCOUNT_TOKENS_PATH);
 
+                                //If this is true we need to generate a token
                                 if (new FileInfo(ACCOUNT_TOKENS_PATH).Length == 0)
                                 {
                                     goto NotFound;
                                 }
 
-                                //if (int.TryParse(toklines[0].Split(',')[0], out int n))
-                                //{
-                                //    throw new FaultException<FileFormatInvalidFault>(new FileFormatInvalidFault() { Issue = "The file: " + ACCOUNT_TOKENS_PATH + " was not formatted correctly" });
-                                //}
-
+                                //Iterate through the file and find if the user already has a token
                                 foreach (string tokline in toklines)
                                 {
-                                    //int num;
-                                    //if (int.TryParse(tokline.Split(',')[0], out num))
-                                    //{
-                                    //    tokens.Add(num);
-                                    //}
                                     if(tokline.Split(',')[1].Equals(name))
                                     {
+                                        //If token found we'll use this token instead
                                         int.TryParse(tokline.Split(',')[0], out tok);
                                         found = true;
                                     }
@@ -110,10 +113,10 @@ namespace Authenticator
                             }    
 
                             NotFound:
+                            //Generate a token
                             if(!found)
                             {
                                 tok = rand.Next(10000000, 99999999);
-                                //tokens.Add(tok);
         
                                 using(StreamWriter sw = File.AppendText(ACCOUNT_TOKENS_PATH))
                                 {
@@ -142,6 +145,7 @@ namespace Authenticator
             return retval;
         }
 
+        //Used to validate a token
         public string Validate(int token)
         {
             string valid = "not validated";
@@ -161,6 +165,7 @@ namespace Authenticator
             return valid;
         }
 
+        //Checks if an account exists in the registered accounts file
         private bool AccountExists(string name)
         {
             bool exists = false;

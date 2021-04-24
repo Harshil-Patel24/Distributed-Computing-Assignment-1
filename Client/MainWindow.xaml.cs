@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-//using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.ServiceModel;
@@ -18,28 +17,16 @@ using Newtonsoft.Json;
 using RestSharp;
 using DataClasses;
 
-//THIS IS PURELY FOR DEBUGGING/TESTING PLS REMOVE REFERNECE TO OTHER PROJECTS LATER
-//using Service_Provider;
-//using Service_Provider.Models;
-//using System.Windows.Forms;
-
 namespace Client
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
-            //var tcp = new NetTcpBinding();
-            //var URL = "net.tcp://localhost:8101/AuthenticationService";
-            //var authFactory = new ChannelFactory<AuthenticatorInterface>(tcp, URL);
-            //var auth = authFactory.CreateChannel();
-
         }
   
+        //Uses authenticators log in functions to log a user in using their input name and password
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             string name = UsernameTextLogin.Text;
@@ -53,12 +40,13 @@ namespace Client
             try
             {
                 val = auth.Login(name, password);
-                //MessageBox.Show(val.ToString());
 
+                //Checks if token was a valid return, ie. if it was a successful login
+                //The token is stored in a singleton called DataSingleton that is accessible on client side
                 if (int.TryParse(val, out DataSingleton.Instance.token))
                 {
                     ErrorText.Text = "";
-                    //DataSingleton.Instance.token = val;
+                    //If logged in move to menu
                     MenuWindow win = new MenuWindow();
                     win.Show();
                     this.Hide();
@@ -70,20 +58,21 @@ namespace Client
             }
             catch(FaultException<AccountNotFoundFault> anf)
             {
-                System.Windows.MessageBox.Show(anf.Message);
+                ErrorText.Text = anf.Message;
             }
             catch(FaultException<FileFormatInvalidFault> ffi)
             {
-                System.Windows.MessageBox.Show(ffi.Message);
+                ErrorText.Text = ffi.Message;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.Message);
+                ErrorText.Text = ex.Message;
             }
 
 
         }
-
+        
+        //Move to the register window
         private void RegisterWindowButton_Click(object sender, RoutedEventArgs e)
         {
             RegisterWindow regwin = new RegisterWindow();

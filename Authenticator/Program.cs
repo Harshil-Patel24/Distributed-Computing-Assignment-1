@@ -20,6 +20,7 @@ namespace Authenticator
                 sw.Close();
             }
 
+            //Create a text file to store account tokens
             if (!File.Exists(Authenticator.ACCOUNT_TOKENS_PATH))
             {
                 StreamWriter sw = File.CreateText(Authenticator.ACCOUNT_TOKENS_PATH);

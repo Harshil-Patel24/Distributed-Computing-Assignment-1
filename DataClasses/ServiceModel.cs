@@ -5,6 +5,7 @@ using System.Web;
 
 namespace DataClasses
 {
+    //Contains the entire description of a service
     public class ServiceModel
     {
         public string Name;

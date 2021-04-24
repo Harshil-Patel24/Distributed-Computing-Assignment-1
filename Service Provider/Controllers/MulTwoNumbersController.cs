@@ -14,19 +14,6 @@ namespace Service_Provider.Controllers
 {
     public class MulTwoNumbersController : ApiController
     {
-        //// GET api/<controller>
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
-        //// GET api/<controller>/5
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        // POST api/<controller>
         public ReturnObject<string> Post([FromBody] PassObject<int[]> pass)
         {
 
@@ -44,23 +31,9 @@ namespace Service_Provider.Controllers
                 ret.Reason = "Authentication failed";
                 return ret;
             }
-            //TwoInts twoint = value;
-            //int ans = value[0] + value[1];
 
-            //Maybe add some sort of error handling
-            //int ans = twoint.add();
             ret.Returned = (value[0] * value[1]).ToString();
             return ret;
         }
-
-        //// PUT api/<controller>/5
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<controller>/5
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

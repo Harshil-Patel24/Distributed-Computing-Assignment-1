@@ -14,8 +14,6 @@ namespace DataClasses
         string Register(string name, string password);
 
         [OperationContract]
-        //[FaultContract(typeof(FileFormatInvalidFault))]
-        //[FaultContract(typeof(AccountNotFoundFault))]
         int Login(string name, string password);
 
         [OperationContract]

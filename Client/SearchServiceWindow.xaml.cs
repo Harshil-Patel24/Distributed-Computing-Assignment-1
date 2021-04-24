@@ -18,9 +18,7 @@ using System.Windows.Shapes;
 
 namespace Client
 {
-    /// <summary>
-    /// Interaction logic for Window1.xaml
-    /// </summary>
+    //This class is used to search a service
     public partial class SearchServiceWindow : Window
     {
         public SearchServiceWindow()
@@ -28,13 +26,7 @@ namespace Client
             InitializeComponent();
         }
 
-        //string URL = "https://localhost:44351/";
-        //RestClient client = new RestClient(URL);
-        //RestRequest request = new RestRequest("api/unpublish/");
-        //request.AddJsonBody(api_endpoint);
-
-        //    client.Post(request);
-
+        //Takes user back to the menu window
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             MenuWindow menu = new MenuWindow();
@@ -42,8 +34,10 @@ namespace Client
             this.Close();
         }
 
+        //Searches for any services with the inputted text
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
+            //Clearing children to only show results in current search
             sp.Children.Clear();
             PassObject<string> pass = new PassObject<string>();
             pass.Token = DataSingleton.Instance.token;
@@ -58,10 +52,11 @@ namespace Client
             ReturnObject<List<ServiceModel>> ret = JsonConvert.DeserializeObject<ReturnObject<List<ServiceModel>>>(response.Content);
             List<ServiceModel> services = ret.Returned;
 
+            //Checks if the called service denied user service
             if (!ret.Status.Equals("Denied"))
             {
-
                 DataSingleton.Instance.serviceModel = services;
+                //Creates buttons for each service result
                 foreach (ServiceModel service in services)
                 {
                     Button newBut = new Button();
@@ -78,6 +73,7 @@ namespace Client
             }
         }
 
+        //Takes user to test the service 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Button btn = sender as Button;
@@ -86,7 +82,6 @@ namespace Client
             TestServiceWindow testwin = new TestServiceWindow(this, endpoint);
             testwin.Show();
             this.Hide();
-            //Send a get request for the clicked buttons name
         }
 
     }

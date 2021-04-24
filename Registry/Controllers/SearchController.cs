@@ -12,31 +12,15 @@ using System.ServiceModel;
 
 namespace Registry.Controllers
 {
+    //Finds all services that contain the search string
     public class SearchController : ApiController
     {
-        //// GET api/<controller>
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
 
-        //// GET api/<controller>/5
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        // POST api/<controller>
         public ReturnObject<List<ServiceModel>> Post([FromBody] PassObject<string> pass)
         {
             List<ServiceModel> matches = new List<ServiceModel>();
             string value = pass.Pass;
-            //using (StreamReader sr = File.OpenText(PublishController.SERVICE_DESCRIPTIONS))
-            //{
-            //    string[] lines = File.ReadAllLines(PublishController.SERVICE_DESCRIPTIONS);
 
-            //}
-           
             ReturnObject<List<ServiceModel>> ret = new ReturnObject<List<ServiceModel>>();
 
             var tcp = new NetTcpBinding();
@@ -44,6 +28,7 @@ namespace Registry.Controllers
             var authFactory = new ChannelFactory<AuthenticatorInterface>(tcp, URL);
             var auth = authFactory.CreateChannel();
 
+            //Denies user of not logged in
             if (!auth.Validate(pass.Token).Equals("validated"))
             {
                 ret.Status = "Denied";
@@ -58,6 +43,7 @@ namespace Registry.Controllers
 
                 foreach(ServiceModel service in services)
                 {
+                    //Matches if service name contains the search string ignoring case
                     if(service.Name.ToUpper().Contains(value.ToUpper()))
                     {
                         matches.Add(service);
@@ -65,19 +51,9 @@ namespace Registry.Controllers
                 }
                 sr.Close();
             }
-            //return JsonConvert.SerializeObject(matches);
             ret.Returned = matches;
             return ret;
 
         }
-        //// PUT api/<controller>/5
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<controller>/5
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

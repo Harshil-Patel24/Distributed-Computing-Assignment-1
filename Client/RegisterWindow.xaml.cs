@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 using DataClasses;
 namespace Client
 {
-    /// <summary>
-    /// Interaction logic for Window1.xaml
-    /// </summary>
     public partial class RegisterWindow : Window
     {
         public RegisterWindow()
@@ -25,6 +22,7 @@ namespace Client
             InitializeComponent();
         }
 
+        //Registers user using autheinticators registration service
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
             string name = UsernameText.Text;
@@ -37,10 +35,11 @@ namespace Client
 
             val = auth.Register(name, password);
 
+            //Either displays successful or error message
             ResponseText.Text = val;
-            //MessageBox.Show(val);
         }
 
+        //Takes user back to the login page
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             MainWindow main = new MainWindow();

@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace Client
 {
-    /// <summary>
-    /// Interaction logic for Window1.xaml
-    /// </summary>
     public partial class MenuWindow : Window
     {
         public MenuWindow()
@@ -24,6 +21,7 @@ namespace Client
             InitializeComponent();
         }
 
+        //Takes user to show all services
         private void ShowAllServicesButton_Click(object sender, RoutedEventArgs e)
         {
             ShowServicesWindow showin = new ShowServicesWindow();
@@ -31,6 +29,7 @@ namespace Client
             this.Hide();
         }
 
+        //Takes user to search a service
         private void SearchAServiceButton_Click(object sender, RoutedEventArgs e)
         {
             SearchServiceWindow searchwin = new SearchServiceWindow();
@@ -38,16 +37,9 @@ namespace Client
             this.Hide();
         }
 
-        //private void TestAServiceButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    TestServiceWindow testwin = new TestServiceWindow();
-        //    testwin.Show();
-        //    this.Hide();
-        //}
-
+        //Logs user out and takes them back to login window
         private void LogOutButton_Click(object sender, RoutedEventArgs e)
         {
-            //Remove the authentication token first -- yet to be implemented
             MainWindow mainwin = new MainWindow();
             DataSingleton.Instance.token = 0;
             mainwin.Show();

@@ -13,22 +13,12 @@ namespace Registry.Controllers
 {
     public class PublishController : ApiController
     {
+        //Location of service descriptions, change if runnning on a different computer
         public const string SERVICE_DESCRIPTIONS = @"D:\Harshil\Uni\Units\DC\Assignment\Service_Descriptions.txt";
+        //Just a list of all valid services so the user doesnt add one that isnt implemented
         private ServiceModel[] valid_services = { new ServiceModel("AddTwoNumbers", "Adds two numbers", "https://localhost:44303/api/addtwonumbers/", 2, "integer"), new ServiceModel("AddThreeNumbers", "Adds three numbers", "https://localhost:44303/api/addthreenumbers/", 3, "integer"), new ServiceModel("MulTwoNumbers", "Multiplys two numbers", "https://localhost:44303/api/multwonumbers/", 2, "integer"), new ServiceModel("MulThreeNumbers", "Multiplys three numbers", "https://localhost:44303/api/multhreenumbers/", 3, "integer"), new ServiceModel("GenPrimeNumbersInRange", "Generates all prime numbers in a given range", "https://localhost:44303/api/genprimenumbersinrange/", 2, "integer"), new ServiceModel("GenPrimeNumbersToValue", "Generates all primes numbers from 1 to a given number", "https://localhost:44303/api/genprimenumberstovalue/", 1, "integer"), new ServiceModel("IsPrimeNumber", "Checks if input number is a prime", "https://localhost:44303/api/isprimenumber/", 1, "integer") };
 
-        //// GET api/<controller>
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
 
-        //// GET api/<controller>/5
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        // POST api/<controller>
         public ReturnObject<List<ServiceModel>> Post([FromBody] PassObject<ServiceModel> pass)
         {
             ReturnObject<List<ServiceModel>> ret = new ReturnObject<List<ServiceModel>>();
@@ -40,6 +30,7 @@ namespace Registry.Controllers
 
             string valid = auth.Validate(pass.Token);
 
+            //Denies a not logged in user
             if (!valid.Equals("validated"))
             {
                 ret.Status = "Denied";
@@ -54,7 +45,6 @@ namespace Registry.Controllers
                 List<ServiceModel> services = new List<ServiceModel>();
                 if (new FileInfo(SERVICE_DESCRIPTIONS).Length == 0)
                 {
-                    //Make this  a list
                     services.Add(value);
                 }
                 else
@@ -64,13 +54,11 @@ namespace Registry.Controllers
                         JsonSerializer serializer = new JsonSerializer();
                         services = (List<ServiceModel>)serializer.Deserialize(sr, typeof(List<ServiceModel>));
                         bool exist = false;
+                        //Adds the esrvice, as long as it isnt already published to avoid double publishing
                         foreach (ServiceModel sm in services)
                         {
-                            //Console.WriteLine("Checking if true");
                             if (sm.Name.Equals(value.Name))
                             {
-                                //already exists
-                        //Console.WriteLine("It does exist");
                                 exist = true;
                             }
                         }
@@ -79,8 +67,6 @@ namespace Registry.Controllers
                             Console.WriteLine(value.Name + " added as a service");
                             services.Add(value);
                         }
-                    //services = services.Distinct<ServiceModel>();
-                    //Read all lines, now put into a list of services
                     }
                 }
 
@@ -91,11 +77,11 @@ namespace Registry.Controllers
                     sw.WriteLine(output);
                     sw.Close();
                 }
-//Console.WriteLine(output);
             }
             return ret;
         }
 
+        //Checks if the service actually exists
         private bool ValidateService(ServiceModel service)
         {
             bool valid = false;
@@ -103,8 +89,7 @@ namespace Registry.Controllers
             foreach(ServiceModel ser in valid_services)
             {
                 Console.WriteLine(service.Name + " " + service.API_Endpoint);
-                //Matches everything but description
-                if(service.Name.Equals(ser.Name) && service.API_Endpoint.Equals(ser.API_Endpoint)) // && service.Number_Of_Operands == ser.Number_Of_Operands && service.Operand_Type.Equals(ser.Operand_Type))
+                if(service.Name.Equals(ser.Name) && service.API_Endpoint.Equals(ser.API_Endpoint))
                 {
                     valid = true;
                 }
@@ -112,15 +97,5 @@ namespace Registry.Controllers
 
             return valid;
         }
-
-        //// PUT api/<controller>/5
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<controller>/5
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

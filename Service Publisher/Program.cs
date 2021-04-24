@@ -14,6 +14,7 @@ namespace Service_Publisher
 {
     class Program
     {
+        //Locations of registered accounts and tokens, change this if using a different computer
         public const string REGISTERED_ACCOUNTS_PATH = @"D:\Harshil\Uni\Units\DC\Assignment\Registered_Accounts.txt";
         public const string ACCOUNT_TOKENS_PATH = @"D:\Harshil\Uni\Units\DC\Assignment\Account_Tokens.txt";
 
@@ -115,10 +116,8 @@ namespace Service_Publisher
                 foreach (string line in lines)
                 {
                     string name = line.Split(',')[0];
-//Console.WriteLine(name);
                     if (name.Equals(username))
                     {
-                        //tok = Int32.Parse(line.Split(',')[0]);
                         found = true;
                         break;
                     }
@@ -139,7 +138,6 @@ namespace Service_Publisher
                 var URL = "net.tcp://localhost:8101/AuthenticationService";
                 var authFactory = new ChannelFactory<AuthenticatorInterface>(tcp, URL);
                 var auth = authFactory.CreateChannel();
-                //Do something with this token
                 string val = auth.Login(username, password);
 
                 if(int.TryParse(val, out DataSingleton.Instance.token))
@@ -192,6 +190,7 @@ namespace Service_Publisher
             }
         }
 
+        //An easy way to publish all services
         public static void PublishAllDefault()
         {
             Console.WriteLine("Publishing all of the following default services -\nAddTwoNumbers\nAddThreeNumbers\nMulTwoNumbers\nMulThreeNumbers\nIsPrimeNumber\nGenPrimeNumbersToValue\nGenPrimeNumbersInRange");
@@ -238,14 +237,6 @@ namespace Service_Publisher
 
             ServicePublisher publisher = new ServicePublisher();
             publisher.Publish(name, desc, endpoint, numop, type);
-            //string URL = "https://localhost:44351/";
-            //RestClient client = new RestClient(URL);
-            //RestRequest request = new RestRequest("api/publish/");
-            //ServiceModel sm = new ServiceModel(name, desc, endpoint, numop, type);
-            
-            //request.AddJsonBody(sm);
-
-            //client.Execute(request);
         }
     
         public static void Unpublish()
@@ -261,6 +252,7 @@ namespace Service_Publisher
             client.Execute(request);
         }
 
+        //Ensure an endpoint is in a valid format
         private static bool ValidEndpointFormat(string endpoint)
         {
             bool valid = false;

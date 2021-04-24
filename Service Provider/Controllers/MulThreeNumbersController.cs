@@ -3,30 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-//using System.Text.Json;
 using System.Web.Http;
 using System.ServiceModel;
 using DataClasses;
-//using Service_Provider.Models;
 
 
 namespace Service_Provider.Controllers
 {
     public class MulThreeNumbersController : ApiController
     {
-        //// GET api/<controller>
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
-        //// GET api/<controller>/5
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        // POST api/<controller>
         public ReturnObject<string> Post([FromBody] PassObject<int[]> pass)
         {
 
@@ -47,18 +32,7 @@ namespace Service_Provider.Controllers
 
             ret.Returned = (value[0] * value[1] * value[2]).ToString();
 
-            //Add exception handling here
             return ret;
         }
-
-        //// PUT api/<controller>/5
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<controller>/5
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

@@ -14,15 +14,6 @@ namespace Service_Provider.Controllers
 {
     public class GenPrimeNumbersInRangeController : ApiController
     {
-        //// GET api/<controller>
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
-
-
-    // GET api/<controller>/5
         public ReturnObject<string> Post([FromBody] PassObject<int[]> pass)
         {
 
@@ -50,28 +41,9 @@ namespace Service_Provider.Controllers
                 }
             }
 
-            //Removes last comma
             primes = primes.Remove(primes.Length - 2);
-            //primes = primes.Remove(primes.Length - 2);
             ret.Returned = primes;
             return ret;
         }
-
-        //// POST api/<controller>
-        //public int Post([FromBody] int[] value)
-        //{
-        //    //Add exception handling here
-        //    return value[0] + value[1] + value[3];
-        //}
-
-        //// PUT api/<controller>/5
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<controller>/5
-        //public void Delete(int id)
-        //{
-        //}
     }
 }
