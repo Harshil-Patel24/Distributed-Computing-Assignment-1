@@ -20,5 +20,8 @@ namespace DataClasses
 
         [OperationContract]
         string Validate(int token);
+
+        [OperationContract]
+        bool AccountExists(string name);
     }
 }

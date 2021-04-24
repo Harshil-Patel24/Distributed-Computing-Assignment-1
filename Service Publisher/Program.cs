@@ -16,23 +16,23 @@ namespace Service_Publisher
     class Program
     {
         //Locations of registered accounts and tokens, change this if using a different computer
-        public const string REGISTERED_ACCOUNTS_PATH = @"D:\Harshil\Uni\Units\DC\Assignment\Registered_Accounts.txt";
-        public const string ACCOUNT_TOKENS_PATH = @"D:\Harshil\Uni\Units\DC\Assignment\Account_Tokens.txt";
+        //public const string REGISTERED_ACCOUNTS_PATH = @"D:\Harshil\Uni\Units\DC\Assignment\Registered_Accounts.txt";
+        //public const string ACCOUNT_TOKENS_PATH = @"D:\Harshil\Uni\Units\DC\Assignment\Account_Tokens.txt";
 
         static void Main(string[] args)
         {
             //Create a text file to store registered accounts
-            if (!File.Exists(REGISTERED_ACCOUNTS_PATH))
-            {
-                StreamWriter sw = File.CreateText(REGISTERED_ACCOUNTS_PATH);
-                sw.Close();
-            }
+            //if (!File.Exists(REGISTERED_ACCOUNTS_PATH))
+            //{
+            //    StreamWriter sw = File.CreateText(REGISTERED_ACCOUNTS_PATH);
+            //    sw.Close();
+            //}
 
-            if (!File.Exists(ACCOUNT_TOKENS_PATH))
-            {
-                StreamWriter sw = File.CreateText(ACCOUNT_TOKENS_PATH);
-                sw.Close();
-            }
+            //if (!File.Exists(ACCOUNT_TOKENS_PATH))
+            //{
+            //    StreamWriter sw = File.CreateText(ACCOUNT_TOKENS_PATH);
+            //    sw.Close();
+            //}
 
             //Start the server
             Console.WriteLine("Welcome to the service publisher!");
@@ -108,29 +108,34 @@ namespace Service_Publisher
         {
             Console.WriteLine("Please enter your username");
             string username = Console.ReadLine();
-            bool found = false;
-            using (StreamReader sr = File.OpenText(REGISTERED_ACCOUNTS_PATH))
-            {
-                string[] lines = File.ReadAllLines(REGISTERED_ACCOUNTS_PATH);
+            //bool found = false;
+            //using (StreamReader sr = File.OpenText(REGISTERED_ACCOUNTS_PATH))
+            //{
+            //    string[] lines = File.ReadAllLines(REGISTERED_ACCOUNTS_PATH);
 
-                if (lines[0].Split(',').Length != 2 && int.TryParse(lines[0].Split(',')[0], out int n))
-                {
-                    throw new FaultException<FileFormatInvalidFault>(new FileFormatInvalidFault() { Issue = "The file: " + ACCOUNT_TOKENS_PATH + " was not formatted correctly" });
-                }
+            //    if (lines[0].Split(',').Length != 2 && int.TryParse(lines[0].Split(',')[0], out int n))
+            //    {
+            //        throw new FaultException<FileFormatInvalidFault>(new FileFormatInvalidFault() { Issue = "The file: " + ACCOUNT_TOKENS_PATH + " was not formatted correctly" });
+            //    }
 
-                foreach (string line in lines)
-                {
-                    string name = line.Split(',')[0];
-                    if (name.Equals(username))
-                    {
-                        found = true;
-                        break;
-                    }
-                }
-                sr.Close();
-            }
+            //    foreach (string line in lines)
+            //    {
+            //        string name = line.Split(',')[0];
+            //        if (name.Equals(username))
+            //        {
+            //            found = true;
+            //            break;
+            //        }
+            //    }
+            //    sr.Close();
+            //}
 
-            if(!found)
+            var tcp = new NetTcpBinding();
+            var URL = "net.tcp://localhost:8101/AuthenticationService";
+            var authFactory = new ChannelFactory<AuthenticatorInterface>(tcp, URL);
+            var auth = authFactory.CreateChannel();
+
+            if (!auth.AccountExists(username))
             {
                 Console.WriteLine("Username not registerd");
             }
@@ -139,10 +144,6 @@ namespace Service_Publisher
                 Console.WriteLine("Please enter your password");
                 string password = Console.ReadLine();
 
-                var tcp = new NetTcpBinding();
-                var URL = "net.tcp://localhost:8101/AuthenticationService";
-                var authFactory = new ChannelFactory<AuthenticatorInterface>(tcp, URL);
-                var auth = authFactory.CreateChannel();
                 string val = auth.Login(username, password);
 
                 if(int.TryParse(val, out DataSingleton.Instance.token))

@@ -166,7 +166,7 @@ namespace Authenticator
         }
 
         //Checks if an account exists in the registered accounts file
-        private bool AccountExists(string name)
+        public bool AccountExists(string name)
         {
             bool exists = false;
             using(StreamReader sr = File.OpenText(REGISTERED_ACCOUNTS_PATH))
