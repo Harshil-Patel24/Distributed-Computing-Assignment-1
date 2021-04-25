@@ -43,9 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountNotFoundFault.cs" />
     <Compile Include="AuthenticatorInterface.cs" />
-    <Compile Include="FileFormatInvalidFault.cs" />
     <Compile Include="PassObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReturnObject.cs" />

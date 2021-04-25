@@ -13,6 +13,8 @@
         <Button x:Name="BackButton" Content="Back" HorizontalAlignment="Left" Height="32" Margin="296,92,0,0" VerticalAlignment="Top" Width="82" Click="BackButton_Click"/>
         <Label Content="Service Name:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,46,0,0" Height="31" Width="101"/>
         <TextBlock x:Name="ErrorText" TextAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Margin="296,146,0,0" Height="189" Width="272"/>
+        <ProgressBar x:Name="WaitingBar" Visibility="Hidden" HorizontalAlignment="Left" Height="15" VerticalAlignment="Top" Width="367" Margin="11,394,0,0"/>
+        <Label x:Name="WaitingLabel" Content="Waiting" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="11,363,0,0"/>
 
     </Grid>
 </Window>

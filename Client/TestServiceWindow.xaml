@@ -6,14 +6,16 @@
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
         Title="Window1" Height="450" Width="800">
-    <Grid RenderTransformOrigin="0.618,0.644">
+    <Grid RenderTransformOrigin="0.715,0.465">
         <Label x:Name="NameLabel" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="37,21,0,0" Height="36" Width="166"/>
         <Button x:Name="GoButton" Content="Go!" Margin="37,343,589,29" Click="GoButton_Click"/>
         <Grid x:Name="Grd" HorizontalAlignment="Left" Height="282" Margin="37,62,0,0" VerticalAlignment="Top" Width="194"/>
         <Button x:Name="BackButton" Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="236,42,0,0" Click="BackButton_Click"/>
-        <TextBlock x:Name="ResponseText" HorizontalAlignment="Left" TextAlignment="Center" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Margin="246,135,0,0" Height="209" Width="522" RenderTransformOrigin="0.51,0.509"/>
         <ProgressBar x:Name="WaitingBar" Visibility="Hidden" HorizontalAlignment="Left" Height="14" VerticalAlignment="Top" Width="507" Margin="261,376,0,0"/>
         <Label x:Name="WaitingLabel" Visibility="Hidden" Content="Waiting:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="261,349,0,0" Width="97"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="320,67,24,90">
+            <TextBlock x:Name="ResponseText" HorizontalAlignment="Left" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="421" RenderTransformOrigin="0.51,0.509"/>
+        </ScrollViewer>
 
     </Grid>
 </Window>

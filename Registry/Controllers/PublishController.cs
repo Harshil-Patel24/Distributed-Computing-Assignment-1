@@ -1,9 +1,6 @@
 ﻿using System;
 using System.ServiceModel;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using DataClasses;
 using Newtonsoft.Json;
@@ -53,7 +50,7 @@ namespace Registry.Controllers
                         JsonSerializer serializer = new JsonSerializer();
                         services = (List<ServiceModel>)serializer.Deserialize(sr, typeof(List<ServiceModel>));
                         bool exist = false;
-                        //Adds the esrvice, as long as it isnt already published to avoid double publishing
+                        //Adds the service, as long as it isn't already published to avoid double publishing
                         foreach (ServiceModel sm in services)
                         {
                             if (sm.Name.Equals(value.Name))

@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ServiceModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataClasses;
 
 namespace Authenticator
@@ -14,11 +9,11 @@ namespace Authenticator
     {
         //These are the locations of the stored accounts and tokens
         //If running this program on a different computer, please change these
-        //public const string REGISTERED_ACCOUNTS_PATH = @"D:\Harshil\Uni\Units\DC\Assignment\Registered_Accounts.txt";
-        //public const string ACCOUNT_TOKENS_PATH = @"D:\Harshil\Uni\Units\DC\Assignment\Account_Tokens.txt";
+        public const string REGISTERED_ACCOUNTS_PATH = @"D:\Harshil\Uni\Units\DC\Assignment\Registered_Accounts.txt";
+        public const string ACCOUNT_TOKENS_PATH = @"D:\Harshil\Uni\Units\DC\Assignment\Account_Tokens.txt";
 
-        public const string REGISTERED_ACCOUNTS_PATH = @".\Accounts.txt";
-        public const string ACCOUNT_TOKENS_PATH = @".\Tokens.txt";
+        //public const string REGISTERED_ACCOUNTS_PATH = @".\Accounts.txt";
+        //public const string ACCOUNT_TOKENS_PATH = @".\Tokens.txt";
 
         //Registers a new user
         public string Register(string name, string password)

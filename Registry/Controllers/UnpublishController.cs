@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using DataClasses;
 using Newtonsoft.Json;
@@ -15,7 +13,6 @@ namespace Registry.Controllers
     {
         //Location of service descriptions, change this if using a different computer
         public const string SERVICE_DESCRIPTIONS = @"D:\Harshil\Uni\Units\DC\Assignment\Service_Descriptions.txt";
-        //private ServiceModel[] valid_services = { new ServiceModel("AddTwoNumbers", "Adds two numbers", "https://localhost:44301/api/addtwonumbers/", 2, "integer"), new ServiceModel("AddThreeNumbers", "Adds three numbers", "https://localhost:44301/api/addthreenumbers/", 3, "integer"), new ServiceModel("MulTwoNumbers", "Multiplys two numbers", "https://localhost:44301/api/multwonumbers/", 2, "integer"), new ServiceModel("MulThreeNumbers", "Multiplys three numbers", "https://localhost:44301/api/multhreenumbers/", 2, "integer"), new ServiceModel("GenPrimeNumbersInRange", "Generates all prime numbers in a given range", "https://localhost:44301/api/genprimenumbersinrange/", 2, "integer"), new ServiceModel("GenPrimeNumbersToValue", "Generates all primes numbers from 1 to a given number", "https://localhost:44301/api/genprimenumberstovalue/", 1, "integer"), new ServiceModel("IsPrimeNumber", "Checks if input number is a prime", "https://localhost:44301/api/isprimenumber/", 1, "integer") };
 
         public ReturnObject<List<ServiceModel>> Post([FromBody] PassObject<string> pass)
         {

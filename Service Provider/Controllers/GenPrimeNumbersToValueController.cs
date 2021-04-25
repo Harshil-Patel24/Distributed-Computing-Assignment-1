@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-//using System.Text.Json;
-using DataClasses;
+﻿using DataClasses;
 using System.ServiceModel;
 using System.Web.Http;
-//using Service_Provider.Models;
 
 
 namespace Service_Provider.Controllers

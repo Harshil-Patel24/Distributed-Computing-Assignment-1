@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
+﻿
 namespace DataClasses
 {
     //This object is used to return any object and the status from a service to the caller

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataClasses;
+﻿using DataClasses;
 using System.ServiceModel;
 using RestSharp;
-//using DataProject;
 
 namespace Service_Publisher
 {
@@ -42,21 +36,6 @@ namespace Service_Publisher
             string status = auth.Register(name, password);
             return status;
         }
-
-        //public void Publish(string name, string description, string api_endpoint, int no_operands, string operand_types)
-        //{
-        //    ServiceModel sm = new ServiceModel(name, description, api_endpoint, no_operands, operand_types);
-        //    PassObject<ServiceModel> pass = new PassObject<ServiceModel>();
-        //    pass.Pass = sm;
-        //    pass.Token = DataSingleton.Instance.token;
-        //    string URL = "https://localhost:44358/";
-        //    RestClient client = new RestClient(URL);
-        //    RestRequest request = new RestRequest("api/publish/");
-
-        //    request.AddJsonBody(pass);
-
-        //    client.Post(request);
-        //}
 
         public void Publish(ServiceModel sm)
         {
