@@ -20,7 +20,6 @@ namespace Service_Publisher
             host.Open();
 
             Console.WriteLine("Service publishing system online...");
-            Console.ReadLine();
 
             Menu();
 
