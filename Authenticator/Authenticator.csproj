@@ -57,5 +57,9 @@
       <Name>DataClasses</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Tokens.txt" />
+    <Content Include="Accounts.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -31,14 +31,27 @@ namespace Service_Provider.Controllers
                 ret.Reason = "Authentication failed";
                 return ret;
             }
-            string primes = "";
+            string primes = "  ";
 
-            for(int ii = values[0]; ii <= values[1]; ii++)
+            if (pass.Pass.Length != 2)
             {
-                if(ii % 2 != 0 && ii % 3 != 0 && ii % 5 != 0 && ii % 7 != 0)
+                ret.Status = "Denied";
+                ret.Reason = "Input was invalid";
+                return ret;
+            }
+
+            for (int ii = values[0]; ii <= values[1]; ii++)
+            {
+                if(ii % 2 != 0 && ii % 3 != 0 && ii % 5 != 0 && ii % 7 != 0 && ii > 1)
                 {
                     primes += ii.ToString() + ", ";
                 }
+            }
+
+            if (primes.Equals("  "))
+            {
+                ret.Returned = "There were no primes in this range";
+                return ret;
             }
 
             primes = primes.Remove(primes.Length - 2);

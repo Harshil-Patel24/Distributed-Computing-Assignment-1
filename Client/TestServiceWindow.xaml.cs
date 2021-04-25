@@ -115,6 +115,8 @@ namespace Client
 
                     testDel.BeginInvoke(client, request, callback, null);
 
+                    ResponseText.Text = "";
+
                     WaitingBar.Visibility = Visibility.Visible;
                     WaitingBar.IsIndeterminate = true;
                     WaitingLabel.Visibility = Visibility.Visible;

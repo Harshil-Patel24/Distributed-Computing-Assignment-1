@@ -13,13 +13,16 @@ namespace Authenticator
     class Authenticator : AuthenticatorInterface
     {
         //These are the locations of the stored accounts and tokens
-        //If running this program on a different computer, please change these to 
-        public const string REGISTERED_ACCOUNTS_PATH = @"D:\Harshil\Uni\Units\DC\Assignment\Registered_Accounts.txt";
-        public const string ACCOUNT_TOKENS_PATH = @"D:\Harshil\Uni\Units\DC\Assignment\Account_Tokens.txt";
+        //If running this program on a different computer, please change these
+        //public const string REGISTERED_ACCOUNTS_PATH = @"D:\Harshil\Uni\Units\DC\Assignment\Registered_Accounts.txt";
+        //public const string ACCOUNT_TOKENS_PATH = @"D:\Harshil\Uni\Units\DC\Assignment\Account_Tokens.txt";
+
+        public const string REGISTERED_ACCOUNTS_PATH = @".\Accounts.txt";
+        public const string ACCOUNT_TOKENS_PATH = @".\Tokens.txt";
 
         //Registers a new user
         public string Register(string name, string password)
-        {
+        {  
             //String defaults to fail until succeeded
             string ret = "unable to register";
 

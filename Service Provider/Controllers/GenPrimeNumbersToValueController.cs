@@ -16,7 +16,7 @@ namespace Service_Provider.Controllers
     {
         public ReturnObject<string> Post([FromBody] PassObject<int[]> pass)
         {
-            string primes = "";
+            string primes = "  ";
             ReturnObject<string> ret = new ReturnObject<string>();
             int id = pass.Pass[0];
 
@@ -32,12 +32,32 @@ namespace Service_Provider.Controllers
                 return ret;
             }
 
+            if (pass.Pass.Length != 1)
+            {
+                ret.Status = "Denied";
+                ret.Reason = "Input was invalid";
+                return ret;
+            }
+
+            if(id < 0)
+            {
+                ret.Status = "Denied";
+                ret.Reason = "There are no negative prime numbers";
+                return ret;
+            }
+
             for (int ii = 1; ii <= id; ii++)
             {
-                if(ii % 2 != 0 && ii % 3 != 0 && ii % 5 != 0 && ii % 7 != 0)
+                if(ii % 2 != 0 && ii % 3 != 0 && ii % 5 != 0 && ii % 7 != 0 && ii > 1)
                 {
                     primes += ii.ToString() + ", ";
                 }
+            }
+
+            if(primes.Equals("  "))
+            {
+                ret.Returned = "There were no primes in this range";
+                return ret;
             }
 
             primes = primes.Remove(primes.Length - 2);

@@ -33,9 +33,20 @@ namespace Service_Provider.Controllers
             {
                 ret.Status = "Denied";
                 ret.Reason = "Input was invalid";
+                return ret;
             }
 
-            ret.Returned = (value[0] + value[1] + value[2]).ToString();
+            try
+            {
+                long ans = checked(((long)value[0] + (long)value[1] + (long)value[2]));
+                ret.Returned = ans.ToString();
+            }
+            catch(OverflowException)
+            {
+                ret.Status = "Denied";
+                ret.Reason = "Numbers were too large";
+                return ret;
+            }
 
             return ret;
         }

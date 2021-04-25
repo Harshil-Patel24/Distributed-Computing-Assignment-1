@@ -13,7 +13,7 @@ namespace Service_Provider.Controllers
     {
         public ReturnObject<string> Post([FromBody] PassObject<int[]> pass)
         {
-            string prime = "false";
+            string prime = "This is not a prime";
 
             ReturnObject<string> ret = new ReturnObject<string>();
             int id = pass.Pass[0];
@@ -30,9 +30,16 @@ namespace Service_Provider.Controllers
                 return ret;
             }
 
-            if (id % 2 != 0 && id % 3 != 0 && id % 5 != 0 && id % 7 != 0)
+            if (pass.Pass.Length != 1)
             {
-                prime = "true";
+                ret.Status = "Denied";
+                ret.Reason = "Input was invalid";
+                return ret;
+            }
+
+            if (id % 2 != 0 && id % 3 != 0 && id % 5 != 0 && id % 7 != 0 && id > 1)
+            {
+                prime = "This is a prime";
             }
 
             ret.Returned = prime;
