@@ -2,7 +2,6 @@
 using System.ServiceModel;
 using RestSharp;
 using DataClasses;
-using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
@@ -264,20 +263,5 @@ namespace Service_Publisher
             while(cont);
 
         }
-
-        ////Ensure an endpoint is in a valid format
-        //private static bool ValidEndpointFormat(string endpoint)
-        //{
-        //    bool valid = false;
-        //    Regex rx = new Regex(@"https?://localhost:\d\d\d\d\d/api/*/", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-        //    MatchCollection matches = rx.Matches(endpoint);
-        //    if(matches.Count > 0)
-        //    {
-        //        valid = true;
-        //    }
-
-        //    return valid;
-        //}
     }
 }
