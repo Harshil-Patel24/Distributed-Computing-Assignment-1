@@ -54,31 +54,6 @@ namespace Client
                 WaitingBar.Visibility = Visibility.Visible;
                 WaitingBar.IsIndeterminate = true;
                 WaitingLabel.Visibility = Visibility.Visible;
-                //IRestResponse response = client.Post(request);
-
-                //ReturnObject<List<ServiceModel>> ret = JsonConvert.DeserializeObject<ReturnObject<List<ServiceModel>>>(response.Content);
-                //List<ServiceModel> services = ret.Returned;
-
-                ////Checks if the called service denied user service
-                //if (!ret.Status.Equals("Denied"))
-                //{
-                //    DataSingleton.Instance.serviceModel = services;
-                //    //Creates buttons for each service result
-                //    foreach (ServiceModel service in services)
-                //    {
-                //        Button newBut = new Button();
-                //        newBut.Content = service.Name;
-                //        newBut.Name = service.Name;
-
-                //        newBut.Click += new RoutedEventHandler(Button_Click);
-                //        sp.Children.Add(newBut);
-                //    }
-                //}
-                //else
-                //{
-                //    ErrorText.Text = ret.Status + ": " + ret.Reason;
-                //}
-
             }
             catch(Exception ex)
             {
@@ -123,7 +98,14 @@ namespace Client
                 }
                 else
                 {
-                    ErrorText.Text = retobj.Status + ": " + retobj.Reason;
+                    Dispatcher.Invoke(() =>
+                    {
+                        WaitingBar.Visibility = Visibility.Hidden;
+                        WaitingBar.IsIndeterminate = false;
+                        WaitingLabel.Visibility = Visibility.Hidden;
+
+                        ErrorText.Text = retobj.Status + ": " + retobj.Reason;
+                    });
                 }
             }
             asyncObj.AsyncWaitHandle.Close();
@@ -134,28 +116,7 @@ namespace Client
             IRestResponse response = client.Post(request);
 
             ReturnObject<List<ServiceModel>> ret = JsonConvert.DeserializeObject<ReturnObject<List<ServiceModel>>>(response.Content);
-            //List<ServiceModel> services = ret.Returned;
-
-            ////Checks if the called service denied user service
-            //if (!ret.Status.Equals("Denied"))
-            //{
-            //    DataSingleton.Instance.serviceModel = services;
-            //    //Creates buttons for each service result
-            //    foreach (ServiceModel service in services)
-            //    {
-            //        Button newBut = new Button();
-            //        newBut.Content = service.Name;
-            //        newBut.Name = service.Name;
-
-            //        newBut.Click += new RoutedEventHandler(Button_Click);
-            //        sp.Children.Add(newBut);
-            //    }
-            //}
-            //else
-            //{
-            //    ErrorText.Text = ret.Status + ": " + ret.Reason;
-            //}
-
+            
             return ret;
 
         }

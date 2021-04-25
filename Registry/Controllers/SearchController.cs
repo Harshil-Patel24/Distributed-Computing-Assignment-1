@@ -13,6 +13,12 @@ namespace Registry.Controllers
 
         public ReturnObject<List<ServiceModel>> Post([FromBody] PassObject<string> pass)
         {
+            if (!File.Exists(PublishController.SERVICE_DESCRIPTIONS))
+            {
+                StreamWriter sw = File.CreateText(PublishController.SERVICE_DESCRIPTIONS);
+                sw.Close();
+            }
+
             List<ServiceModel> matches = new List<ServiceModel>();
             string value = pass.Pass;
 
@@ -36,14 +42,23 @@ namespace Registry.Controllers
                 JsonSerializer serializer = new JsonSerializer();
                 List<ServiceModel> services = (List<ServiceModel>)serializer.Deserialize(sr, typeof(List<ServiceModel>));
 
-                foreach(ServiceModel service in services)
+                if(services != null)
                 {
-                    //Matches if service name contains the search string ignoring case
-                    if(service.Name.ToUpper().Contains(value.ToUpper()))
+                    foreach(ServiceModel service in services)
                     {
-                        matches.Add(service);
+                        //Matches if service name contains the search string ignoring case
+                        if(service.Name.ToUpper().Contains(value.ToUpper()))
+                        {
+                            matches.Add(service);
+                        }
                     }
                 }
+                else
+                {
+                    ret.Status = "Denied";
+                    ret.Reason = "No services have been published";
+                }
+
                 sr.Close();
             }
             ret.Returned = matches;

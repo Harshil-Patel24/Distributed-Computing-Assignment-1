@@ -12,10 +12,16 @@ namespace Registry.Controllers
     public class UnpublishController : ApiController
     {
         //Location of service descriptions, change this if using a different computer
-        public const string SERVICE_DESCRIPTIONS = @"D:\Harshil\Uni\Units\DC\Assignment\Service_Descriptions.txt";
+        //public const string SERVICE_DESCRIPTIONS = @"D:\Harshil\Uni\Units\DC\Assignment\Service_Descriptions.txt";
 
         public ReturnObject<List<ServiceModel>> Post([FromBody] PassObject<string> pass)
         {
+            if (!File.Exists(PublishController.SERVICE_DESCRIPTIONS))
+            {
+                StreamWriter sw = File.CreateText(PublishController.SERVICE_DESCRIPTIONS);
+                sw.Close();
+            }
+
             string value = pass.Pass;
             List<ServiceModel> services = new List<ServiceModel>();
 
@@ -35,9 +41,9 @@ namespace Registry.Controllers
             }
 
             bool removed = false;
-            if (new FileInfo(SERVICE_DESCRIPTIONS).Length != 0)
+            if (new FileInfo(PublishController.SERVICE_DESCRIPTIONS).Length != 0)
             {
-                using(StreamReader sr = File.OpenText(SERVICE_DESCRIPTIONS))
+                using(StreamReader sr = File.OpenText(PublishController.SERVICE_DESCRIPTIONS))
                 {
                     JsonSerializer serializer = new JsonSerializer();
                     services = (List<ServiceModel>)serializer.Deserialize(sr, typeof(List<ServiceModel>));
@@ -68,7 +74,7 @@ namespace Registry.Controllers
 
             string output = JsonConvert.SerializeObject(services);
 
-            using (StreamWriter sw = new StreamWriter(SERVICE_DESCRIPTIONS))
+            using (StreamWriter sw = new StreamWriter(PublishController.SERVICE_DESCRIPTIONS))
             {
                 sw.WriteLine(output);
                 sw.Close();

@@ -12,6 +12,12 @@ namespace Registry.Controllers
 
         public ReturnObject<List<ServiceModel>> Post([FromBody] PassObject<string> pass)
         {
+            if (!File.Exists(PublishController.SERVICE_DESCRIPTIONS))
+            {
+                StreamWriter sw = File.CreateText(PublishController.SERVICE_DESCRIPTIONS);
+                sw.Close();
+            }
+
             List<ServiceModel> matches = new List<ServiceModel>();
             ReturnObject<List<ServiceModel>> ret = new ReturnObject<List<ServiceModel>>();
   
@@ -35,12 +41,21 @@ namespace Registry.Controllers
                 JsonSerializer serializer = new JsonSerializer();
                 List<ServiceModel> services = (List<ServiceModel>)serializer.Deserialize(sr, typeof(List<ServiceModel>));
 
-                //Adds all services to matches
-                foreach(ServiceModel service in services)
+                if(services != null)
                 {
-                        matches.Add(service);
+                    //Adds all services to matches
+                    foreach(ServiceModel service in services)
+                    {
+                            matches.Add(service);
+                    }
+                    sr.Close();
                 }
-                sr.Close();
+                else
+                {
+                    ret.Status = "Denied";
+                    ret.Reason = "No services have been published";
+                }
+
             }
 
             ret.Returned = matches;
